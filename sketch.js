@@ -92,6 +92,96 @@ function start() {
 //The following code is the section of the game that explains the 'story' or the 'context' of the game
 function story() {
   background("black");
+  fill("black");
+  textSize(20);
+  stroke("white");
+  strokeWeight(3);
+  text("Our story begins in a land far, far away...", 20, height / 3 - 123);
+  fill("white");
+  strokeWeight(0);
+  textSize(13);
+  text(
+    "In said place, there was a beautiful ocean that spaned across the",
+    20,
+    height / 3 - 100
+  );
+  text(
+    "shore line. It was one of the land's most tresured landmark's, not",
+    20,
+    height / 3 - 80
+  );
+  text(
+    "to mention there only source of fresh water. Therefore, it was",
+    20,
+    height / 3 - 60
+  );
+  text(
+    "very important that these lovely water remained in pristine",
+    20,
+    height / 3 - 40
+  );
+  text(
+    "condition. But alas, not all who lived there held such beliefs. It",
+    20,
+    height / 3 - 20
+  );
+  text(
+    "was not long before these individuals, driven by ignorance,",
+    20,
+    height / 3
+  );
+  text(
+    "decided to polute the precious sea with their filth and grime.",
+    20,
+    height / 3 + 20
+  );
+  text(
+    "It was not long before the rest of the inhabitants became aware",
+    20,
+    height / 3 + 40
+  );
+  text(
+    "of their horrid motives. They knew that if their cherished ocean",
+    20,
+    height / 3 + 60
+  );
+  text(
+    "were to be contaminated then it would not be long before the",
+    20,
+    height / 3 + 80
+  );
+  text(
+    "ressourse becames scarce and eventually completely",
+    20,
+    height / 3 + 100
+  );
+  text(
+    "unavailable. With this in mind, the civilians gathered together,",
+    20,
+    height / 3 + 120
+  );
+  text(
+    "concluding that to stop these villains they would need to",
+    20,
+    height / 3 + 140
+  );
+  text(
+    "cleanse the sullied waters and purge muck themselves. Thus,",
+    20,
+    height / 3 + 160
+  );
+  text(
+    "the Lustrate Aqua was created, and with the help of it's",
+    20,
+    height / 3 + 180
+  );
+  text(
+    "enchanted abilities, you were sent into the deep depths of the",
+    20,
+    height / 3 + 200
+  );
+  text("tarnished ocean. Your goal? To restore the sea back to it's", 20, height / 3 + 220);
+  text("former glory and vanquish these villains once and for all!", 20, height / 3 + 240);
   
   //Creates the 'back scene' button
   backButton = new Button2();
@@ -269,6 +359,7 @@ function game() {
   for (let i = 0; i < enemies.length; i++) {
     enemies[i].show();
     enemies[i].move();
+    enemies[i].oust();
     if (enemies[i].hits(player)) {
       //If they collide with the player they loose health
       console.log("Player hit!");
@@ -313,7 +404,7 @@ function game() {
       score += 10;
     }
   }
-
+  
   //Removes the enemy from the array upon coming into contact with anything
   for (let i = enemies.length - 1; i >= 0; i--) {
     if (enemies[i].rid) {
@@ -323,78 +414,85 @@ function game() {
     }
   }
 
-  //Allows the player to move horizontally in both directions using the right and left arrow keys or the A and D keys
-  if (keyIsDown(RIGHT_ARROW) || keyCode === 68) {
-    player.move(1);
-  } else if (keyIsDown(LEFT_ARROW) || keyCode === 65) {
-    player.move(-1);
+  //Removes the enemy from the array if it goes out of bounds
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    if (enemies[i].out) {
+      enemies.splice(i, 1);
+    }
   }
 
-  //Displays HP lost
-  noStroke();
-  fill(255, 0, 0);
-  rect(90, 30, 150, 30);
+    //Allows the player to move horizontally in both directions using the right and left arrow keys or the A and D keys
+    if (keyIsDown(RIGHT_ARROW) || keyCode === 68) {
+      player.move(1);
+    } else if (keyIsDown(LEFT_ARROW) || keyCode === 65) {
+      player.move(-1);
+    }
 
-  //Displays HP left in health bar
-  noStroke();
-  fill(0, 255, 30);
-  rect(player.healthBarX, 30, player.healthBarWidth, 30);
+    //Displays HP lost
+    noStroke();
+    fill(255, 0, 0);
+    rect(90, 30, 150, 30);
 
-  //Displays HP in text
-  textSize(18);
-  fill(4, 43, 11);
-  text("HP: " + player.health, 20, 38);
+    //Displays HP left in health bar
+    noStroke();
+    fill(0, 255, 30);
+    rect(player.healthBarX, 30, player.healthBarWidth, 30);
 
-  //Displays score
-  textSize(18);
-  text("Score: " + score, 15, 70);
+    //Displays HP in text
+    textSize(18);
+    fill(4, 43, 11);
+    text("HP: " + player.health, 20, 38);
 
-  //Makes the player shoot the water pellets when they hit the space button
-  /*if (keyCode === 32 && keyIsPressed === true) {
+    //Displays score
+    textSize(18);
+    text("Score: " + score, 15, 70);
+
+    //Makes the player shoot the water pellets when they hit the space button
+    /*if (keyCode === 32 && keyIsPressed === true) {
     let bullet = new Bullet(player.x, height - 135);
     bullets.push(bullet);
   }*/
-}
-
-//If the player's health reaches 0 then the following function would run
-function gameover() {
-  if (player.health <= 0) {
-    console.log("Gameover!");
-    background(197, 7, 7);
-    player.healthBarWidth = 0;
-    player.health = 0;
   }
-}
 
-//If the player achieves a high enough score than the following code runs
-function win() {
-  if (score >= 10000) {
-    console.log("You win!");
-    background(7, 127, 127);
+  //If the player's health reaches 0 then the following function would run
+  function gameover() {
+    if (player.health <= 0) {
+      console.log("Gameover!");
+      background(197, 7, 7);
+      player.healthBarWidth = 0;
+      player.health = 0;
+    }
   }
-}
 
-//Draws the appropriate scene
-function draw() {
-  if (scene == 0) {
-    start();
-  } else if (scene == 1) {
-    story();
-  } else if (scene == 2) {
-    tutorial1();
-  } else if (scene == 3) {
-    tutorial2();
-  } else if (scene == 4) {
-    game();
-    gameover();
-    win();
+  //If the player achieves a high enough score than the following code runs
+  function win() {
+    if (score >= 10000) {
+      console.log("You win!");
+      background(7, 127, 127);
+    }
   }
-}
 
-//Makes the player shoot the water pellets when they hit the space button
-function keyPressed() {
-  if (keyCode === 32 && keyIsPressed === true) {
-    let bullet = new Bullet(constrain(player.x, 25, 375), height - 135);
-    bullets.push(bullet);
+  //Draws the appropriate scene
+  function draw() {
+    if (scene == 0) {
+      start();
+    } else if (scene == 1) {
+      story();
+    } else if (scene == 2) {
+      tutorial1();
+    } else if (scene == 3) {
+      tutorial2();
+    } else if (scene == 4) {
+      game();
+      gameover();
+      win();
+    }
   }
-}
+
+  //Makes the player shoot the water pellets when they hit the space button
+  function keyPressed() {
+    if (keyCode === 32 && keyIsPressed === true) {
+      let bullet = new Bullet(constrain(player.x, 25, 375), height - 135);
+      bullets.push(bullet);
+    }
+  }
