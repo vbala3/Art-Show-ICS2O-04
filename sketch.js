@@ -116,7 +116,7 @@ function story() {
     height / 3 - 60
   );
   text(
-    "very important that these lovely water remained in pristine",
+    "very important that these lovely waters remained in pristine",
     20,
     height / 3 - 40
   );
@@ -131,7 +131,7 @@ function story() {
     height / 3
   );
   text(
-    "decided to polute the precious sea with their filth and grime.",
+    "decided to polute the precious sea with their muck and grime.",
     20,
     height / 3 + 20
   );
@@ -166,7 +166,7 @@ function story() {
     height / 3 + 140
   );
   text(
-    "cleanse the sullied waters and purge muck themselves. Thus,",
+    "cleanse the sullied waters and purge the filth themselves. Thus,",
     20,
     height / 3 + 160
   );
