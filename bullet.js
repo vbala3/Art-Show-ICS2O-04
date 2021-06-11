@@ -4,14 +4,29 @@ function Bullet(x, y) {
   this.y = y;
   this.r = 7;
   this.rid = false;
+  this.out = false;
 
-  //Destroys the bullet upon making contact with anything
+  //Checks if the water pellet is out of bounds
+  this.outOfBounds = function (boundary) {
+    let bounded = dist(this.x, this.y, boundary.x, boundary.y);
+    if (bounded < this.r + boundary.r) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  //Destroys the water pellet if out of bounds
+  this.off = function () {
+    this.out = true;
+  };
+  
+  //Destroys the water pellet upon making contact with an enemy
   this.oust = function () {
     this.rid = true;
   };
 
-  
-  //Checks if the bullet has collided with an enemy
+  //Checks if the water pellet has collided with an enemy
   this.hits = function (enemy) {
     let d = dist(this.x, this.y, enemy.x, enemy.y);
     if (d < this.r + enemy.r) {
@@ -21,7 +36,7 @@ function Bullet(x, y) {
     }
   };
   
-  //Checks if the bullet has collided with a healing spot
+  //Checks if the water pellet has collided with a healing spot
   this.regen = function (heal) {
     let d = dist(this.x, this.y, heal.x, heal.y);
     if (d < this.r + heal.r) {
@@ -31,12 +46,12 @@ function Bullet(x, y) {
     }
   };
 
-  //Allows the bullets to move
+  //Allows the water pellets to move
   this.move = function () {
     this.y = this.y - 5;
   };
 
-  //Creates the bullet
+  //Creates the water pellets
   this.show = function () {
     noStroke();
     fill(150, 0, 255);
