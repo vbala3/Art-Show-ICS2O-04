@@ -160,7 +160,7 @@ function story() {
     height / 3 - 80
   );
   text(
-    "to mention there only source of fresh water. Therefore, it was",
+    "to mention their only source of fresh water. Therefore, it was",
     20,
     height / 3 - 60
   );
@@ -185,7 +185,7 @@ function story() {
     height / 3 + 20
   );
   text(
-    "It was not long before the rest of the inhabitants became aware",
+    "Of course, the rest of the inhabitants quickly became aware",
     20,
     height / 3 + 40
   );
