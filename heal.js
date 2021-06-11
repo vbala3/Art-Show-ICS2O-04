@@ -4,6 +4,14 @@ function Heal(x, y) {
   this.y = y;
   this.r = 5;
   this.speed = 0.5;
+  this.out = false;
+
+  //Destroys the enemy when hit enough times completely and increases the score
+  this.oust = function () {
+    if (this.y >= 400 + this.r) {
+      this.out = true;
+    }
+  };
 
   //Makes the healing spots grow to a certain size when hit by a water pellet
   this.grow = function () {
