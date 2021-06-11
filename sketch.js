@@ -2,7 +2,11 @@
 let player; //Stores the player's charcter's properties
 let bullets = []; //Stores an array of the water pellet's properties
 let enemies = []; //Stores an array of the enemies's properties
+let tougherEnemies = []; //Stores an array of the tougher enemies's properties
 let heals = []; //Stores an array of the healing spot's properties
+let powerScores = []; //Stores an array of the score increasing power up's properties
+let powerLogs = []; //Stores an array of the log power up's properties
+let logs = []; //Stores the giant water pellet's properties
 let score = 0; //Stores the player's score
 let difficultyCheck = 0; //Checks what difficulty the user has selected - 0 = EASY MODE and 1 = HARD MODE
 let scene = 0; //Stores the scene numbeer and acts as a counter to determine which scene comes next and what scenes have played already
@@ -13,7 +17,7 @@ let hardModeButton; //Stores the properties for the 'activate HARD MODE' button
 
 //Moves to the next scene when the player clicks a button
 function next() {
-  if (scene <= 5) {
+  if (scene <= 7) {
     scene++;
     console.log("Next!");
   }
@@ -40,25 +44,70 @@ function startDiff() {
 function setup() {
   createCanvas(400, 450);
   player = new Player();
+  boundary = new Boundary();
 
-  //HARD MODE ACTIVATED - Enemies spawn more frequently and healing spots spawn less frequently
+  //HARD MODE ACTIVATED - Enemies spawn more frequently and healing spots and power ups spawn less frequently
   if (difficultyCheck == 1) {
     for (let i = 0; i < 50; i++) {
       enemies[i] = new Enemy(random(constrain(width, 20, 380)), random(-6500));
+      enemies[i].speed = 2;
+    }
+    for (let i = 0; i < 70; i++) {
+      tougherEnemies[i] = new Enemy(
+        random(constrain(width, 20, 380)),
+        random(-8000)
+      );
+      tougherEnemies[i].r = 30;
+      tougherEnemies[i].speed = 3;
+    }
+    for (let i = 0; i < 2; i++) {
+      heals[i] = new Heal(random(constrain(width, 20, 380)), random(-6500));
+    }
+    for (let i = 0; i < 5; i++) {
+      powerScores[i] = new ScoreInc(
+        random(constrain(width, 20, 380)),
+        random(-6500)
+      );
+    }
+    for (let i = 0; i < 3; i++) {
+      powerLogs[i] = new PowerPush(
+        random(constrain(width, 20, 380)),
+        random(-6500)
+      );
+    }
+  }
+
+  //EASY MODE ACTIVATED - Enemies spawn less frequently and healing spots and power ups spawn more frequently
+  else if (difficultyCheck == 0) {
+    for (let i = 0; i < 45; i++) {
+      enemies[i] = new Enemy(random(constrain(width, 20, 380)), random(-6500));
+      enemies[i].speed = 1;
+    }
+    for (let i = 0; i < 25; i++) {
+      tougherEnemies[i] = new Enemy(
+        random(constrain(width, 20, 380)),
+        random(-6500)
+      );
+      tougherEnemies[i].r = 30;
+      tougherEnemies[i].speed = 2;
     }
     for (let i = 0; i < 8; i++) {
       heals[i] = new Heal(random(constrain(width, 20, 380)), random(-6500));
     }
-  }
-
-  //EASY MODE ACTIVATED - Enemies spawn less frequently and healing spots spawn more frequently
-  else {
-    for (let i = 0; i < 80; i++) {
-      enemies[i] = new Enemy(random(constrain(width, 20, 380)), random(-6500));
+    for (let i = 0; i < 8; i++) {
+      powerScores[i] = new ScoreInc(
+        random(constrain(width, 20, 380)),
+        random(-6500)
+      );
     }
     for (let i = 0; i < 5; i++) {
-      heals[i] = new Heal(random(constrain(width, 20, 380)), random(-6500));
+      powerLogs[i] = new PowerPush(
+        random(constrain(width, 20, 380)),
+        random(-6500)
+      );
     }
+  } else if (difficultyCheck == 3) {
+    //chashbcibcibifia;fffffifcbhyebci
   }
 }
 
@@ -180,9 +229,17 @@ function story() {
     20,
     height / 3 + 200
   );
-  text("tarnished ocean. Your goal? To restore the sea back to it's", 20, height / 3 + 220);
-  text("former glory and vanquish these villains once and for all!", 20, height / 3 + 240);
-  
+  text(
+    "tarnished ocean. Your goal? To restore the sea back to it's",
+    20,
+    height / 3 + 220
+  );
+  text(
+    "former glory and vanquish these villains once and for all!",
+    20,
+    height / 3 + 240
+  );
+
   //Creates the 'back scene' button
   backButton = new Button2();
   backButton.show();
@@ -289,20 +346,52 @@ function tutorial2() {
   textSize(30);
   stroke("white");
   strokeWeight(4);
-  text("Ready to begin?", 20, height / 3);
+  text("Ready to begin?", 20, height / 3 - 48);
   fill("white");
   strokeWeight(0);
   textSize(14);
   text(
     "If so, then go ahead and select the difficulty mode you",
     20,
-    height / 3 + 30
+    height / 3 - 20
   );
   text(
-    "would like to play on. EASY MODE has less enemies that take less hits to defeat, as well as more healing spots and power ups. The enemies also deal less damage. HARD MODE has ",
+    "would like to play on. EASY MODE has less enemies that",
     20,
-    height / 3 + 30
+    height / 3
   );
+  text(
+    "take less hits to defeat, as well as more healing spots",
+    20,
+    height / 3 + 20
+  );
+  text(
+    "and power ups. The enemies also deal less damage and",
+    20,
+    height / 3 + 40
+  );
+  text("healing spots heal more HP. HARD MODE has more", 20, height / 3 + 60);
+  text(
+    "enemies that take more hits to defeat, as well as",
+    20,
+    height / 3 + 80
+  );
+  text(
+    "less healing spots and power ups. The enemies also",
+    20,
+    height / 3 + 100
+  );
+  text(
+    "deal more damage and healing spots heal less HP.",
+    20,
+    height / 3 + 120
+  );
+  text(
+    "Got it? Alright, then click one of the buttons below",
+    20,
+    height / 3 + 140
+  );
+  text("to begin the game! Good luck!", 20, height / 3 + 160);
 
   //Creates the EASY MODE button that begins the easier version game
   easyModeButton = new Button1();
@@ -318,9 +407,10 @@ function game() {
   //Conceals the buttons used during the tutorial
   nextButton.hide();
 
-  //Changes the background and makes the player visible
+  //Changes the background, makes the player visible and adds the boundaries
   background(38, 178, 237);
   player.show();
+  boundary.show();
 
   //Creates the bullets and checks if they collide with an enemy
   for (let i = 0; i < bullets.length; i++) {
@@ -332,11 +422,38 @@ function game() {
         //If on HARD MODE enemies take more hits to destroy
         if (difficultyCheck == 1) {
           enemies[j].dec = 5;
+        } else if (difficultyCheck == 0) {
+          enemies[j].dec = 20;
         }
         //Lowers enemies health or destroys them completely and stops the same bullet from hitting more than one time
         enemies[j].shrink();
         bullets[i].oust();
         enemies[j].oust();
+        //Increases the player's score when they shoot an enemy
+        score += 10;
+      }
+    }
+  }
+
+  //Creates the bullets and checks if they collide with a tougher enemy
+  for (let i = 0; i < bullets.length; i++) {
+    bullets[i].show();
+    bullets[i].move();
+    for (let j = 0; j < tougherEnemies.length; j++) {
+      if (bullets[i].hits(tougherEnemies[j])) {
+        console.log("Super critical hit!");
+        //If on HARD MODE enemies take more hits to destroy
+        if (difficultyCheck == 1) {
+          tougherEnemies[j].dec = 6;
+        } else if (difficultyCheck == 0) {
+          tougherEnemies[j].dec = 15;
+        }
+        //Lowers enemies health or destroys them completely and stops the same bullet from hitting more than one time
+        tougherEnemies[j].shrink();
+        bullets[i].oust();
+        tougherEnemies[j].oust();
+        //Increases the player's score when they shoot a tougher enemy
+        score += 20;
       }
     }
   }
@@ -351,6 +468,8 @@ function game() {
         console.log("Regenerate!");
         heals[j].grow();
         bullets[i].oust();
+        //Increases the player's score by a bit when they shoot a healing spot
+        score += 5;
       }
     }
   }
@@ -376,10 +495,33 @@ function game() {
     }
   }
 
+  //Creates the tougher enemies and checks if they collided with the player
+  for (let i = 0; i < tougherEnemies.length; i++) {
+    tougherEnemies[i].showTough();
+    tougherEnemies[i].move();
+    tougherEnemies[i].oust();
+    if (tougherEnemies[i].hits(player)) {
+      //If they collide with the player they loose health
+      if (difficultyCheck == 1) {
+        //They loose more health if they are playing on HARD MODE
+        player.health -= 4;
+        player.healthBarWidth -= 6;
+        player.healthBarX -= 3;
+        console.log("Player took lots of damage!");
+      } else if (difficultyCheck == 0) {
+        player.health -= 2;
+        player.healthBarWidth -= 3;
+        player.healthBarX -= 1.5;
+        console.log("Player took lots of damage!");
+      }
+    }
+  }
+
   //Creates the healing spots and checks if they are touching the player
   for (let i = 0; i < heals.length; i++) {
     heals[i].show();
     heals[i].move();
+    heals[i].oust();
     if (heals[i].hits(player)) {
       //If they are then increase the player's health
       //If on HARD MODE player heals less HP
@@ -396,21 +538,137 @@ function game() {
     }
   }
 
+  //Creates the score increasing power up and checks if it collided with the player
+  for (let i = 0; i < powerScores.length; i++) {
+    powerScores[i].show();
+    powerScores[i].move();
+    powerScores[i].oust();
+    if (powerScores[i].hits(player)) {
+      //If it collides with the player their score increases greatly
+      powerScores[i].oust();
+      powerScores[i].r = 0;
+      console.log("Score increased drastically!");
+      if (difficultyCheck == 1) {
+        //If they are playing on HARD MODE then their score increases less
+        score += 500;
+      } else {
+        score += 1000;
+      }
+    }
+  }
+
+  //Creates the log power up and checks if it collided with the player
+  for (let i = 0; i < powerLogs.length; i++) {
+    powerLogs[i].show();
+    powerLogs[i].move();
+    powerLogs[i].oust();
+    if (powerLogs[i].hits(player)) {
+      //If it collides with the player then the log power up disappears and the player's water gun shoots out a giant water pellet
+      powerLogs[i].r = 0;
+      call();
+      console.log("Power PUSH!!!");
+      powerLogs[i].oust();
+    }
+  }
+
+  //The giant water pellet moves forward slowly
+  for (let i = 0; i < logs.length; i++) {
+    logs[i].show();
+    logs[i].move();
+    for (let j = 0; j < enemies.length; j++) {
+      if (logs[i].hits(enemies[j])) {
+        //Destroys the enemies completely when hit by the giant water pellet
+        console.log("One hit KO!");
+        enemies[j].r = 0;
+        enemies[j].oust();
+      }
+    }
+  }
+
+  //The giant water pellet moves forward slowly
+  for (let i = 0; i < logs.length; i++) {
+    logs[i].show();
+    logs[i].move();
+    for (let j = 0; j < tougherEnemies.length; j++) {
+      if (logs[i].hits(tougherEnemies[j])) {
+        //Destroys the tougher enemies completely when hit by the giant water pellet
+        console.log("One hit KO!");
+        tougherEnemies[j].r = 0;
+        tougherEnemies[j].oust();
+      }
+    }
+  }
+
+  //Checks if the water pellet is out of bounds
+  for (let i = 0; i < bullets.length; i++) {
+    bullets[i].show();
+    bullets[i].move();
+    if (bullets[i].outOfBounds(boundary)) {
+      bullets[i].off();
+    }
+  }
+
+  //Removes the water pellet from the array if it goes out of bounds
+  for (let i = bullets.length - 1; i >= 0; i--) {
+    if (bullets[i].out) {
+      bullets.splice(i, 1);
+    }
+  }
+
+  //Checks if the giant water pellet is out of bounds
+  for (let i = 0; i < logs.length; i++) {
+    logs[i].show();
+    logs[i].move();
+    if (logs[i].outOfBounds(boundary)) {
+      logs[i].off();
+      //Also increases the player's score when they unleash the giant water pellet and it goes off screen
+      score += 50;
+    }
+  }
+
+  //Removes the giant water pellet from the array if it goes out of bounds
+  for (let i = logs.length - 1; i >= 0; i--) {
+    if (logs[i].out) {
+      logs.splice(i, 1);
+    }
+  }
+
   //Removes bullet from the array upon coming into contact with anything
   for (let i = bullets.length - 1; i >= 0; i--) {
     if (bullets[i].rid) {
       bullets.splice(i, 1);
-      //Increases the player's score a bit when they hit anything
-      score += 10;
     }
   }
-  
+
   //Removes the enemy from the array upon coming into contact with anything
   for (let i = enemies.length - 1; i >= 0; i--) {
     if (enemies[i].rid) {
       enemies.splice(i, 1);
       //Increase the player's score greatly when they defeat an enemy
       score += 100;
+    }
+  }
+
+  //Removes the tougher enemy from the array upon coming into contact with anything
+  for (let i = tougherEnemies.length - 1; i >= 0; i--) {
+    if (tougherEnemies[i].rid) {
+      tougherEnemies.splice(i, 1);
+      //Increase the player's score greatly when they defeat a tougher enemy
+      score += 200;
+    }
+  }
+
+  //Removes the score increasing power up from the array upon coming into contact with the player
+  for (let i = powerScores.length - 1; i >= 0; i--) {
+    if (powerScores[i].rid) {
+      powerScores.splice(i, 1);
+    }
+  }
+
+  //Removes the log power up from the array upon coming into contact with the player
+  for (let i = powerLogs.length - 1; i >= 0; i--) {
+    if (powerLogs[i].rid) {
+      powerLogs.splice(i, 1);
     }
   }
 
@@ -421,78 +679,171 @@ function game() {
     }
   }
 
-    //Allows the player to move horizontally in both directions using the right and left arrow keys or the A and D keys
-    if (keyIsDown(RIGHT_ARROW) || keyCode === 68) {
-      player.move(1);
-    } else if (keyIsDown(LEFT_ARROW) || keyCode === 65) {
-      player.move(-1);
+  //Removes the tougher enemy from the array if it goes out of bounds
+  for (let i = tougherEnemies.length - 1; i >= 0; i--) {
+    if (tougherEnemies[i].out) {
+      tougherEnemies.splice(i, 1);
     }
+  }
 
-    //Displays HP lost
-    noStroke();
-    fill(255, 0, 0);
-    rect(90, 30, 150, 30);
+  //Removes the healing spot from the array if it goes out of bounds
+  for (let i = heals.length - 1; i >= 0; i--) {
+    if (heals[i].out) {
+      heals.splice(i, 1);
+    }
+  }
 
-    //Displays HP left in health bar
-    noStroke();
-    fill(0, 255, 30);
-    rect(player.healthBarX, 30, player.healthBarWidth, 30);
+  //Removes the score increasing power up from the array if it goes out of bounds
+  for (let i = powerScores.length - 1; i >= 0; i--) {
+    if (powerScores[i].out) {
+      powerScores.splice(i, 1);
+    }
+  }
 
-    //Displays HP in text
-    textSize(18);
-    fill(4, 43, 11);
-    text("HP: " + player.health, 20, 38);
+  //Removes the log power up from the array if it goes out of bounds
+  for (let i = powerLogs.length - 1; i >= 0; i--) {
+    if (powerLogs[i].out) {
+      powerLogs.splice(i, 1);
+    }
+  }
 
-    //Displays score
-    textSize(18);
-    text("Score: " + score, 15, 70);
+  //Allows the player to move horizontally in both directions using the right and left arrow keys or the A and D keys
+  if (keyIsDown(RIGHT_ARROW) || keyCode === 68) {
+    player.move(1);
+  } else if (keyIsDown(LEFT_ARROW) || keyCode === 65) {
+    player.move(-1);
+  }
 
-    //Makes the player shoot the water pellets when they hit the space button
-    /*if (keyCode === 32 && keyIsPressed === true) {
+  //Displays HP lost
+  noStroke();
+  fill(255, 0, 0);
+  rect(90, 30, 150, 30);
+
+  //Displays HP left in health bar
+  noStroke();
+  fill(0, 255, 30);
+  rect(player.healthBarX, 30, player.healthBarWidth, 30);
+
+  //Displays HP in text
+  textSize(18);
+  fill(4, 43, 11);
+  text("HP: " + player.health, 20, 38);
+
+  //Displays score
+  textSize(18);
+  text("Score: " + score, 15, 70);
+
+  //Makes the player shoot the water pellets when they hit the space button
+  /*if (keyCode === 32 && keyIsPressed === true) {
     let bullet = new Bullet(player.x, height - 135);
     bullets.push(bullet);
   }*/
-  }
 
-  //If the player's health reaches 0 then the following function would run
-  function gameover() {
-    if (player.health <= 0) {
-      console.log("Gameover!");
-      background(197, 7, 7);
-      player.healthBarWidth = 0;
-      player.health = 0;
-    }
+  if (player.health <= 0 || score >= 10000) {
+    scene++;
   }
+}
 
-  //If the player achieves a high enough score than the following code runs
-  function win() {
-    if (score >= 10000) {
-      console.log("You win!");
-      background(7, 127, 127);
-    }
-  }
+//If the player's health reaches 0 then the following function would run
+function gameover() {
+  if (player.health <= 0) {
+    console.log("Gameover!");
+    background(197, 7, 7);
+    player.healthBarWidth = 0;
+    player.health = 0;
 
-  //Draws the appropriate scene
-  function draw() {
-    if (scene == 0) {
-      start();
-    } else if (scene == 1) {
-      story();
-    } else if (scene == 2) {
-      tutorial1();
-    } else if (scene == 3) {
-      tutorial2();
-    } else if (scene == 4) {
-      game();
-      gameover();
-      win();
-    }
+    fill("black");
+    textSize(45);
+    stroke("white");
+    strokeWeight(4);
+    text("GAMEOVER!", 60, height / 3 + 10);
+    fill("white");
+    strokeWeight(0);
+    textSize(14);
+    text(
+      "Oh no! All the gunk has clogged up the engines in your ship!",
+      15,
+      height / 3 + 40
+    );
+    text(
+      "There is no way you can go on any further with it in that kind",
+      15,
+      height / 3 + 65
+    );
+    text("of condition! Better luck next time I suppose!", 15, height / 3 + 90);
   }
+}
 
-  //Makes the player shoot the water pellets when they hit the space button
-  function keyPressed() {
-    if (keyCode === 32 && keyIsPressed === true) {
-      let bullet = new Bullet(constrain(player.x, 25, 375), height - 135);
-      bullets.push(bullet);
-    }
+//If the player achieves a high enough score than the following code runs
+function win() {
+  if (score >= 10000) {
+    console.log("You win!");
+    background(7, 127, 127);
+    fill("black");
+    textSize(45);
+    stroke("white");
+    strokeWeight(4);
+    text("YOU WIN!", 90, height / 3 - 10);
+    fill("white");
+    strokeWeight(0);
+    textSize(14);
+    text(
+      "Congratulations! Well done! You managed to clear all the",
+      15,
+      height / 3 + 20
+    );
+    text(
+      "gunk in the ocean, and seeked out the source as well!",
+      15,
+      height / 3 + 45
+    );
+    text(
+      "With the matter finally disposed of the villagers may live",
+      15,
+      height / 3 + 70
+    );
+    text(
+      "at peace once again, with the knowledge that should another",
+      15,
+      height / 3 + 95
+    );
+    text(
+      "evil arise, you will be their to cleanse their land once more.",
+      15,
+      height / 3 + 120
+    );
   }
+}
+
+
+//Draws the appropriate scene
+function draw() {
+  if (scene == 0) {
+    start();
+  } else if (scene == 1) {
+    story();
+  } else if (scene == 2) {
+    tutorial1();
+  } else if (scene == 3) {
+    tutorial2();
+  } else if (scene == 4) {
+    game();
+  } else if (scene == 5) {
+    gameover();
+    win();
+  }
+}
+
+//Makes the player shoot the water pellets when they hit the space button
+function keyPressed() {
+  if (keyCode === 32 && keyIsPressed === true) {
+    let bullet = new Bullet(constrain(player.x, 25, 375), height - 135);
+    bullets.push(bullet);
+  }
+}
+
+//Makes the player shoot the giant water pellet
+call = function () {
+  let log = new Log(constrain(player.x, 25, 375), height - 135);
+  logs.push(log);
+};
