@@ -1,3 +1,5 @@
+/*The final product of my game. There is still much more I wish to do and could do, but for now, I am quite happy with how it came out. Changes in this version are minor, mostly final touches and adding a winning screen.*/
+
 //All variable and arrays are created
 let player; //Stores the player's charcter's properties
 let bullets = []; //Stores an array of the water pellet's properties
