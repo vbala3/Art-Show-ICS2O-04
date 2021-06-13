@@ -54,10 +54,10 @@ function setup() {
       enemies[i] = new Enemy(random(constrain(width, 20, 380)), random(-6500));
       enemies[i].speed = 2;
     }
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 140; i++) {
       tougherEnemies[i] = new Enemy(
         random(constrain(width, 20, 380)),
-        random(-10000)
+        random(-13000)
       );
       tougherEnemies[i].r = 30;
       tougherEnemies[i].speed = 3;
