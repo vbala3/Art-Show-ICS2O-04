@@ -50,14 +50,14 @@ function setup() {
 
   //HARD MODE ACTIVATED - Enemies spawn more frequently and healing spots and power ups spawn less frequently
   if (difficultyCheck == 1) {
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 70; i++) {
       enemies[i] = new Enemy(random(constrain(width, 20, 380)), random(-6500));
       enemies[i].speed = 2;
     }
-    for (let i = 0; i < 70; i++) {
+    for (let i = 0; i < 100; i++) {
       tougherEnemies[i] = new Enemy(
         random(constrain(width, 20, 380)),
-        random(-8000)
+        random(-10000)
       );
       tougherEnemies[i].r = 30;
       tougherEnemies[i].speed = 3;
