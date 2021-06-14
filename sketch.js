@@ -19,7 +19,7 @@ let hardModeButton; //Stores the properties for the 'activate HARD MODE' button
 
 //Moves to the next scene when the player clicks a button
 function next() {
-  if (scene <= 7) {
+  if (scene <= 3) {
     scene++;
     console.log("Next!");
   }
@@ -27,7 +27,7 @@ function next() {
 
 //Moves back a scene when the player clicks a button
 function back() {
-  if (scene > 0 && scene <= 5) {
+  if (scene > 0 && scene <= 3) {
     scene--;
     console.log("Back!");
   }
@@ -35,7 +35,7 @@ function back() {
 
 //Starts the game portion of the program in HARD MODE
 function startDiff() {
-  if (scene <= 5) {
+  if (scene <= 4) {
     difficultyCheck++;
     scene++;
     setup();
